@@ -1,4 +1,8 @@
 import type { ImageMetadata } from "astro";
+import aularaImage from "../assets/projects/aulara-abstract.webp";
+import inkyraImage from "../assets/projects/inkyra-abstract.webp";
+import kontiImage from "../assets/projects/konti-abstract.webp";
+import quipuImage from "../assets/projects/quipu-abstract.webp";
 
 interface ProjectBase {
   id: number;
@@ -40,26 +44,10 @@ export const projects: readonly Project[] = [
     ],
     year: "2024–actualidad",
     url: "https://www.konti.dev/",
+    image: kontiImage,
   },
   {
     id: 2,
-    title: "¿QuéComo?",
-    category: "Foodtech · IA",
-    description:
-      "Aplicación web que reduce la fricción de decidir qué comer mediante sugerencias rápidas de snacks, desayunos y menús adaptados al contexto del usuario.",
-    stack: [
-      "Next.js",
-      "React",
-      "TypeScript",
-      "Supabase",
-      "Tailwind CSS",
-      "Polar",
-    ],
-    year: "2026",
-    url: "https://que-como.vercel.app/",
-  },
-  {
-    id: 3,
     title: "Inkyra",
     category: "Creative tech · IA",
     description:
@@ -74,9 +62,10 @@ export const projects: readonly Project[] = [
     ],
     year: "2026",
     url: "https://inkyra.app/",
+    image: inkyraImage,
   },
   {
-    id: 4,
+    id: 3,
     title: "Quipu",
     category: "Fintech · Finanzas personales",
     description:
@@ -91,9 +80,10 @@ export const projects: readonly Project[] = [
     ],
     year: "2026",
     url: "https://quipu-finance.app/",
+    image: quipuImage,
   },
   {
-    id: 5,
+    id: 4,
     title: "Aulara",
     category: "Edtech · Gestión escolar",
     description:
@@ -108,9 +98,10 @@ export const projects: readonly Project[] = [
     ],
     year: "2026",
     status: "En desarrollo",
+    image: aularaImage,
   },
   {
-    id: 6,
+    id: 5,
     title: "Naya",
     category: "Seguridad personal · Movilidad",
     description:

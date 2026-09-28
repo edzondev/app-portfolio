@@ -1,18 +1,19 @@
 import { describe, expect, test } from "bun:test";
 import { type Project, projects } from "../src/data/projects";
 
-const expectedTitles = [
-  "Konti",
-  "¿QuéComo?",
-  "Inkyra",
-  "Quipu",
-  "Aulara",
-  "Naya",
-];
+const expectedTitles = ["Konti", "Inkyra", "Quipu", "Aulara", "Naya"];
+
+const titlesWithCardMedia = ["Konti", "Inkyra", "Quipu", "Aulara"];
+
+function cardImagePath(image: Project["image"] | string): string | undefined {
+  if (typeof image === "string") return image;
+  return image?.src;
+}
 
 describe("project data", () => {
   test("preserves the approved order", () => {
     expect(projects.map(({ title }) => title)).toEqual(expectedTitles);
+    expect(projects.map(({ id }) => id)).toEqual([1, 2, 3, 4, 5]);
   });
 
   test("keeps public destinations only on published projects", () => {
@@ -23,7 +24,6 @@ describe("project data", () => {
 
     expect(publishedProjects.map(({ title, url }) => [title, url])).toEqual([
       ["Konti", "https://www.konti.dev/"],
-      ["¿QuéComo?", "https://que-como.vercel.app/"],
       ["Inkyra", "https://inkyra.app/"],
       ["Quipu", "https://quipu-finance.app/"],
     ]);
@@ -52,8 +52,8 @@ describe("project data", () => {
     }
   });
 
-  test("keeps every project complete and image-ready", () => {
-    expect(projects).toHaveLength(6);
+  test("keeps every project complete and wires abstract card media", () => {
+    expect(projects).toHaveLength(5);
 
     for (const project of projects) {
       expect(project.id).toBeGreaterThan(0);
@@ -61,7 +61,14 @@ describe("project data", () => {
       expect(project.description.length).toBeGreaterThan(40);
       expect(project.stack.length).toBeGreaterThanOrEqual(5);
       expect(project.year.length).toBeGreaterThan(0);
-      expect(project.image).toBeUndefined();
+
+      if (titlesWithCardMedia.includes(project.title)) {
+        expect(cardImagePath(project.image)).toContain(
+          `${project.title.toLowerCase()}-abstract.webp`,
+        );
+      } else {
+        expect(project.image).toBeUndefined();
+      }
     }
   });
 });
