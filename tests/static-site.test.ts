@@ -98,18 +98,24 @@ test("renders published projects as safe external links", async () => {
   const html = await readOutput("dist/index.html");
   const expectedUrls = [
     "https://www.konti.dev/",
-    "https://que-como.vercel.app/",
     "https://inkyra.app/",
     "https://quipu-finance.app/",
   ];
   const projectLinks =
     html.match(/<a\b[^>]*class="project-entry project-link"[^>]*>/g) ?? [];
 
-  expect(html.match(/<article class="project-card"/g)).toHaveLength(6);
-  expect(html.match(/<h2\b/g)).toHaveLength(6);
-  expect(projectLinks).toHaveLength(4);
-  expect(html.match(/PROJECT VISUAL — COMING SOON/g)).toHaveLength(4);
-  expect(html.match(/class="project-arrow"/g)).toHaveLength(4);
+  expect(html).not.toContain("¿QuéComo?");
+  expect(html).not.toContain("que-como.vercel.app");
+  expect(html.match(/<article class="project-card"/g)).toHaveLength(5);
+  expect(html.match(/<h2\b/g)).toHaveLength(5);
+  expect(projectLinks).toHaveLength(3);
+  expect(html).not.toContain("PROJECT VISUAL — COMING SOON");
+  expect(html.match(/class="project-image"/g)).toHaveLength(4);
+  expect(html.match(/class="project-arrow"/g)).toHaveLength(3);
+
+  for (const title of ["Konti", "Inkyra", "Quipu", "Aulara"]) {
+    expect(html).toContain(`alt="Vista previa de ${title}"`);
+  }
 
   for (const url of expectedUrls) {
     expect(html).toContain(`href="${url}"`);
@@ -133,7 +139,8 @@ test("renders projects in development as non-interactive previews", async () => 
 
   expect(developmentArticles).toHaveLength(2);
   expect(html.match(/>EN DESARROLLO</g)).toHaveLength(2);
-  expect(html.match(/PROYECTO EN DESARROLLO/g)).toHaveLength(2);
+  expect(html.match(/PROYECTO EN DESARROLLO/g)).toHaveLength(1);
+  expect(html).toContain('alt="Vista previa de Aulara"');
 
   for (const article of developmentArticles) {
     expect(article).toContain('class="project-entry project-preview"');
